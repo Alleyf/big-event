@@ -1,4 +1,4 @@
-import api from '@/util/http'
+import api from '@/utils/http'
 
 function login (params) {
   console.log(params);

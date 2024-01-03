@@ -1,4 +1,4 @@
-import api from '@/util/http/'
+import api from '@/utils/http'
 
 
 // 获取所有文章
