@@ -1,0 +1,22 @@
+jwt:
+  # 密钥
+  secret: qazwsxedcrfv
+  # 过期时间(单位毫秒:12小时)
+  expire: 43200000
+
+# 本地文件上传配置
+files:
+  upload:
+    path: E:\IDEAProjects\big_event\src\main\resources\static\files\
+
+# 对象存储配置
+qiniu:
+  accessKey: zlsDfteiKb2EoQCgcdFTRAqDzjhKxvr5L4Qyqig9
+  secretKey: HeDk3u0C-TKdUbZsuQZtNJ2P29C77tJNJSzNXQ9k
+  bucket: abroadmap
+  domain: https://qnpicmap.fcsluck.top/
+
+spring:
+  config:
+    activate:
+      on-profile: devSelf

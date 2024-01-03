@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.fcs.mapper.ArticleMapper">
+    <!--动态sql-->
+    <select id="page" resultType="org.fcs.model.entity.Article">
+        select * from article
+        <where>
+            <if test="createBy!= null and createBy!= ''">
+                create_by = #{createBy}
+            </if>
+            <if test="categoryId!= null and categoryId!= ''">
+                and category_id = #{categoryId}
+            </if>
+            <if test="state!= null and state!= ''">
+                and state = #{state}
+            </if>
+        </where>
+    </select>
+
+</mapper>

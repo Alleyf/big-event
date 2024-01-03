@@ -1,0 +1,44 @@
+# spring配置
+spring:
+  config:
+    activate:
+      on-profile: devDB
+  # 调整上传文件大小
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 500MB
+  # 数据库配置
+  datasource:
+    # 数据库驱动类名
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    # 数据库连接URL
+    url: jdbc:mysql://localhost:3306/big_event?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8
+    # 数据库用户名
+    username: alleyf
+    # 数据库密码
+    password: 123456
+  #  redis
+  data:
+    redis:
+      host: 127.0.0.1
+      port: 6379
+      password: 123456
+      database: 0
+      timeout: 3000
+
+
+
+# mybatis配置
+mybatis:
+  configuration:
+    #  开启驼峰命名与下划线命名的自动转换
+    map-underscore-to-camel-case: true
+    # 日志实现类
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+# logging配置
+logging:
+  level:
+    # 日志级别为debug的sql
+    sql: debug

@@ -1,0 +1,12 @@
+# 通用信息，指定生效环境和多环境共用信息
+spring:
+  profiles:
+    group:
+      "dev": devServer,devDB,devSelf
+      "test": testSelf,testDB,testServer
+      "prod": prodSelf,prodDB,prodServer
+      "default": devServer,devDB,devSelf
+    active: dev #注意YAML配置文件需要加单引号 ，否则会报错
+
+
+

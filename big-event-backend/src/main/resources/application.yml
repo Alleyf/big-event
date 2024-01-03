@@ -1,0 +1,7 @@
+# 通用信息，指定生效环境和多环境共用信息
+spring:
+  profiles:
+    active: '@environment@'  #注意YAML配置文件需要加单引号 ，否则会报错
+#    active: dev #注意YAML配置文件需要加单引号 ，否则会报错
+
+
