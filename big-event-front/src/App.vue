@@ -1,10 +1,11 @@
 <script setup>
 // 数据和行为
-import ArticleList from './components/article/Article.vue';
+// import ArticleList from './components/article/Article.vue';
+import LoginView from './views/Login.vue';
 </script>
 
 <template>
-  <ArticleList />
+  <LoginView/>
 </template>
 
 <style scoped>

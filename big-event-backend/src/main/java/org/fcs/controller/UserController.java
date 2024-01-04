@@ -1,5 +1,6 @@
 package org.fcs.controller;
 
+import cn.hutool.core.lang.Assert;
 import cn.hutool.crypto.SecureUtil;
 import cn.hutool.json.JSONObject;
 import jakarta.annotation.Resource;
@@ -21,9 +22,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @Author alleyf
- * @Date 2023/12/24 22:56
- * @Version 1.0
+ * @author alleyf
+ * @version 1.0
+ * @date 2023/12/24 22:56
  */
 @RestController
 @RequestMapping("/api/user")
@@ -55,14 +56,13 @@ public class UserController {
                            @Pattern(regexp = "^\\S{4,20}$", message = "密码格式不正确")
                            @RequestParam("password") String password) {
         // 检查用户名是否已存在
-        if (userService.findByUsername(username) == null) {
-            // 添加新用户
-            String message = userService.register(username, password);
-            // 返回成功结果
-            return Result.success(message);
-        }
-        // 返回用户名已存在错误信息
-        return Result.error("用户名已存在");
+        Assert.isNull(userService.findByUsername(username), "用户名已存在");
+//        if (userService.findByUsername(username) == null) {
+        // 添加新用户
+        String message = userService.register(username, password);
+        // 返回成功结果
+        return Result.success(message);
+//        }
     }
 
     /**
@@ -86,7 +86,6 @@ public class UserController {
                 String jwtToken = fJwtUtil.createJwtToken(user);
 //                存储token到redis中
                 redis.opsForValue().set(jwtToken, jwtToken, expire / 1000, TimeUnit.SECONDS);
-//                log.info("jwtToken: {}", jwtToken);
                 return Result.success(jwtToken);
             } else {
                 // 返回密码错误错误信息

@@ -2,11 +2,11 @@
 server:
   port: 8080
   # 线程池配置
-  undertow:
+  tomcat:
     threads:
-      worker: 10
-      io: 10
-    direct-buffers: true
+      max: 100
+      min-spare: 5
+
 
 jwt:
   # 密钥
