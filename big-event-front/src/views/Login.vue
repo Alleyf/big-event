@@ -1,8 +1,16 @@
 <script setup>
 import {Lock, User} from '@element-plus/icons-vue'
 import {reactive, ref} from 'vue'
+import {useRouter} from "vue-router";
+import {useTokenStore} from "@/stores/token.js";
 import {ElMessage} from "element-plus";
 import user from '@/api/user'
+
+
+// 路由
+const router = useRouter();
+// 状态
+const tokenStore = useTokenStore();
 //控制注册与登录表单的显示， 默认显示注册
 const isRegister = ref(false);
 // 定义数据模型
@@ -44,14 +52,9 @@ const register = () => {
   form.value.validate((valid) => {
     if (valid) {
       user.registerService(registerData.value, res => {
-        if (res.code === 200) {
-          ElMessage.success('注册成功')
-        } else {
-          ElMessage.error('注册失败:' + res.message)
-        }
+        ElMessage.success('注册成功')
       }, err => {
         console.log(err)
-        ElMessage.error('系统内部发生错误')
       })
     }
     return false
@@ -61,17 +64,17 @@ const register = () => {
 //登录数据模型
 const login = () => {
   // 表单校验
-  console.log(form.value);
+  // console.log(form.value);
   form.value.validate((valid) => {
     if (valid) {
       user.loginService(registerData.value, res => {
-            if (res.code === 200) {
-              ElMessage.success('登录成功')
-              localStorage.setItem('token', res.data)
-              console.log(res);
-            } else {
-              ElMessage.error('登录失败:' + res.message)
-            }
+            ElMessage.success('登录成功')
+            // console.log(tokenStore.token)
+            // localStorage.setItem('token', res.data)
+            // 登陆成功跳转到主页
+            router.push({path: '/'})
+            //登陆成功后保存token到pinia中供全局使用
+            tokenStore.setToken(res.data)
           },
           err => {
             console.log(err)
