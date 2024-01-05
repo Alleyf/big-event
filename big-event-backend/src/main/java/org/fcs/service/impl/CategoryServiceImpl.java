@@ -35,8 +35,17 @@ public class CategoryServiceImpl implements CategoryService {
     public void add(Category category) {
         category.setCreateBy(getLoginUserName());
         log.warn("创建人：{}", category.getCreateBy());
-        Integer code = categoryMapper.add(category);
-        Assert.equals(1, code, "添加分类失败");
+        // 校验分类是否存在
+        Category existCategory = categoryMapper.getCategoryByName(category.getCategoryName());
+        if (existCategory != null) {
+//            判断是否被逻辑删除
+            Assert.equals(true, existCategory.getIsDel(), "分类已存在");
+            Integer recover = categoryMapper.recover(category.getCategoryName(), getLoginUserName());
+            Assert.equals(1, recover, "恢复分类失败");
+        } else {
+            Integer code = categoryMapper.add(category);
+            Assert.equals(1, code, "添加分类失败");
+        }
     }
 
     @Override
@@ -58,5 +67,13 @@ public class CategoryServiceImpl implements CategoryService {
         category.setUpdateBy(getLoginUserName());
         Integer code = categoryMapper.update(category);
         Assert.equals(1, code, "修改分类失败");
+    }
+
+    @Override
+    public void delete(Integer id) {
+        // 校验分类是否存在
+        detail(id);
+        Integer code = categoryMapper.delete(id, getLoginUserName());
+        Assert.equals(1, code, "删除分类失败");
     }
 }

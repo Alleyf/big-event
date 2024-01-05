@@ -16,6 +16,7 @@ const routes = [
             },
             {
                 path: 'article/manage',
+                // component: () => import("@/views/article/ArticleManage.vue"),
                 component: () => import("@/views/article/ArticleManage.vue"),
             },
             {
@@ -57,7 +58,7 @@ router.beforeEach((to, from, next) => {
     // 直接放行登录和注册页
     if (to.path === '/login' || to.path === '/register') return next()
     // 判断是否登录含有token，有：放行，没有：跳转到登录页
-    if (tokenStore.token !== '') {
+    if (tokenStore.token !== '' && tokenStore.token !== null) {
         next()
     } else {
         ElMessage.error('请先登录')

@@ -17,4 +17,6 @@ public interface CategoryService {
     Category detail(Integer cid);
 
     void edit(Category category);
+
+    void delete(Integer id);
 }

@@ -65,4 +65,17 @@ public class CategoryController {
         categoryService.edit(category);
         return Result.success();
     }
+
+    /**
+     * 删除分类
+     *
+     * @param id 分类ID
+     * @return 删除结果
+     */
+
+    @DeleteMapping("/delete")
+    public Result<?> delete(@RequestParam("id") Integer id) {
+        categoryService.delete(id);
+        return Result.success();
+    }
 }

@@ -12,16 +12,63 @@ import {
 import avatar from '@/assets/default.png'
 import {useRouter} from "vue-router";
 import {useTokenStore} from "@/stores/token.js";
+import {useUserInfoStore} from "@/stores/userinfo.js"
+import user from "@/api/user";
+import {onMounted} from "vue";
+import {ElMessage, ElMessageBox} from "element-plus";
+
 
 // 路由
 const router = useRouter();
 // 状态
 const tokenStore = useTokenStore();
+// 用户信息
+const userInfoStore = useUserInfoStore();
+
 
 const logout = () => {
-  tokenStore.delToken();
-  router.push('/login');
+  ElMessageBox.confirm('确定要退出登录吗?',
+      '温馨提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+    // 清空个人信息和token
+    tokenStore.delToken();
+    userInfoStore.removeInfo();
+    // 跳转到登录页面
+    router.push('/login');
+    ElMessage.success('退出登录成功');
+  }).catch(() => {
+    ElMessage.info('取消退出登录');
+  });
+
 }
+
+
+const getUserInfo = () => {
+  user.userInfoService(res => {
+    userInfoStore.setInfo(res.data);
+  }, err => {
+    console.log(err);
+  })
+}
+
+
+const handleCommand = (command) => {
+  if (command === 'logout') {
+    logout();
+  } else {
+    router.push("/user/" + command);
+  }
+}
+
+
+onMounted(() => {
+  if (tokenStore.token) {
+    getUserInfo();
+  }
+})
 </script>
 
 <template>
@@ -76,20 +123,20 @@ const logout = () => {
     <el-container>
       <!-- 头部区域 -->
       <el-header>
-        <div>黑白程序员：<strong>小范</strong></div>
-        <el-dropdown placement="bottom-end">
+        <div>黑白程序员：<strong>{{ userInfoStore.info.nickname }}</strong></div>
+        <el-dropdown placement="bottom-end" @command="handleCommand">
                     <span class="el-dropdown__box">
-                        <el-avatar :src="avatar"/>
+                        <el-avatar :src="userInfoStore.info.userPic || userInfoStore.defaultAvatar || avatar"/>
                         <el-icon>
                             <CaretBottom/>
                         </el-icon>
                     </span>
           <template #dropdown>
-            <el-dropdown-menu>
-              <el-dropdown-item :icon="User" command="profile">基本资料</el-dropdown-item>
+            <el-dropdown-menu class="el-dropdown-menu--right">
+              <el-dropdown-item :icon="User" command="info">基本资料</el-dropdown-item>
               <el-dropdown-item :icon="Crop" command="avatar">更换头像</el-dropdown-item>
-              <el-dropdown-item :icon="EditPen" command="password">重置密码</el-dropdown-item>
-              <el-dropdown-item :icon="SwitchButton" command="logout" @click="logout">退出登录</el-dropdown-item>
+              <el-dropdown-item :icon="EditPen" command="resetPsd">重置密码</el-dropdown-item>
+              <el-dropdown-item :icon="SwitchButton" command="logout">退出登录</el-dropdown-item>
             </el-dropdown-menu>
           </template>
         </el-dropdown>

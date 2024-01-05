@@ -60,7 +60,7 @@ public class QiniuOssUtil {
      * @return map
      */
     public List<Map<String, String>> uploadImages(MultipartFile[] multipartFiles) throws IOException {
-        log.info(multipartFiles.length + "张图片上传中...");
+//        log.info(multipartFiles.length + "张图片上传中...");
         List<Map<String, String>> imageUrls = new ArrayList<>();
         for (MultipartFile file : multipartFiles) {
             String originalFilename = file.getOriginalFilename();

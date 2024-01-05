@@ -7,6 +7,7 @@ import com.github.pagehelper.PageHelper;
 import jakarta.annotation.Resource;
 import org.fcs.core.utils.ThreadLocalUtil;
 import org.fcs.mapper.ArticleMapper;
+import org.fcs.mapper.CategoryMapper;
 import org.fcs.model.entity.Article;
 import org.fcs.model.pojo.PageBean;
 import org.fcs.service.ArticleService;
@@ -24,6 +25,8 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Resource
     private ArticleMapper articleMapper;
+    @Resource
+    private CategoryMapper categoryMapper;
 
     private static String getLoginUserName() {
         // 获取用户信息

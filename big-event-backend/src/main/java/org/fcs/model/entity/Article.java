@@ -27,7 +27,7 @@ public class Article extends BaseEntity {
     /**
      * 文章标题
      */
-    @Pattern(regexp = "^\\S{1,10}$")
+    @Pattern(regexp = "^\\S{2,20}$")
     @NotEmpty
     private String title;
     /**

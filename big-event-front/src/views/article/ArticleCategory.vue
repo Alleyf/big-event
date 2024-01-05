@@ -1,6 +1,6 @@
 <script setup>
 import {Delete, Edit,} from '@element-plus/icons-vue'
-import {onMounted, reactive, ref} from 'vue'
+import {onMounted, onUpdated, reactive, ref} from 'vue'
 import article from "@/api/article";
 import {ElMessage} from "element-plus";
 
@@ -24,12 +24,20 @@ const rules = reactive({
 })
 
 // 定义事件
-const handleEdit = () => {
+const handleEdit = (row) => {
   diaTitle.value = '编辑分类'
+  categoryModel.value = row
   dialogVisible.value = true
 }
-const handleDelete = () => {
-  console.log('handleDelete')
+const handleDelete = (row) => {
+
+  article.categoryDelete(row, res => {
+    ElMessage.success('删除成功')
+    // 重新获取分类列表
+    getCategory()
+  }, err => {
+    console.log(err)
+  })
 }
 const handleAdd = () => {
   diaTitle.value = '添加分类'
@@ -53,21 +61,20 @@ const submitForm = () => {
     if (valid) {
       if (diaTitle.value === '添加分类') {
         article.categoryAdd(categoryModel.value, res => {
-          dialogVisible.value = false
+          getCategory();
           ElMessage.success('添加成功')
         }, err => {
           console.log(err)
         })
       } else {
         article.categoryUpdate(categoryModel.value, res => {
-          dialogVisible.value = false
+          getCategory();
           ElMessage.success('修改成功')
         }, err => {
           console.log(err)
         })
       }
-      // 重新获取分类列表
-      getCategory()
+      dialogVisible.value = false
     }
     return false
   })
@@ -79,10 +86,13 @@ onMounted(() => {
   getCategory()
 })
 
+onUpdated(() => {
+  getCategory()
+})
+
 </script>
 <template>
-  // 添加和编辑对话框
-  <!-- 添加分类弹窗 -->
+  <!--  添加和编辑对话框-->
   <el-dialog v-model="dialogVisible" :title="diaTitle" width="30%">
     <el-form ref="form" :model="categoryModel" :rules="rules" label-width="100px" style="padding-right: 30px">
       <el-form-item label="分类名称" prop="categoryName">
@@ -113,10 +123,28 @@ onMounted(() => {
       <el-table-column label="序号" type="index" width="100"></el-table-column>
       <el-table-column label="分类名称" prop="categoryName"></el-table-column>
       <el-table-column label="分类别名" prop="categoryAlias"></el-table-column>
+      <el-table-column label="创建人" prop="createBy"></el-table-column>
+      <el-table-column label="更新人" prop="updateBy"></el-table-column>
+      <el-table-column label="创建时间" prop="createTime"></el-table-column>
+      <el-table-column label="更新时间" prop="updateTime"></el-table-column>
       <el-table-column label="操作" width="100">
         <template #default="{ row }">
-          <el-button :icon="Edit" circle plain type="primary" @click="handleEdit"></el-button>
-          <el-button :icon="Delete" circle plain type="danger" @click="handleDelete"></el-button>
+          <el-button :icon="Edit" circle plain type="primary" @click="handleEdit(row)"></el-button>
+          <el-popconfirm title="">
+            <template #reference>
+            </template>
+          </el-popconfirm>
+          <el-popconfirm
+              cancel-button-text="No"
+              confirm-button-text="Yes"
+              icon-color="#626AEF"
+              title="确定要删除该条数据吗?"
+              @confirm="handleDelete(row)"
+          >
+            <template #reference>
+              <el-button :icon="Delete" circle plain type="danger"></el-button>
+            </template>
+          </el-popconfirm>
         </template>
       </el-table-column>
       <template #empty>
