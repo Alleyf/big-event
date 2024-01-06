@@ -250,7 +250,6 @@ onUpdated(() => {
             </el-table-column>
             <el-table-column label="分类" prop="categoryName"/>
             <el-table-column label="发表时间" prop="createTime"/>
-            <el-table-column label="更新时间" prop="UpdateTime"/>
             <el-table-column label="状态" prop="state"/>
             <el-table-column label="操作">
               <template #default="{ row }">
@@ -369,7 +368,7 @@ onUpdated(() => {
   width: 100%;
 
   :deep(.ql-editor) {
-    min-height: 320px;
+    min-height: 200px;
   }
 }
 

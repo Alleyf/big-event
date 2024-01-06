@@ -1,8 +1,27 @@
 {
   "name": "big-event",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "private": true,
   "type": "module",
+  "engines": {
+    "node": ">=16.13.0"
+  },
+  "author": "Alleyf",
+  "license": "MIT",
+  "description": "A SpringBoot3 + Vue3 project aiming to help initialLearner familiar with SpringBoot and Vue",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Alleyf/big-event.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Alleyf/big-event/issues"
+  },
+  "homepage": "https://github.com/Alleyf/big-event#readme",
+  "browserslist": [
+    "last 2 versions",
+    "not dead",
+    "not IE 11"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "vite build",
