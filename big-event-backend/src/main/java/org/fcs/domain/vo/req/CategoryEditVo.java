@@ -12,7 +12,7 @@ import org.hibernate.validator.constraints.Length;
  * @Version 1.0
  */
 @Data
-public class CategoryEdit {
+public class CategoryEditVo {
     /**
      * 主键ID
      */

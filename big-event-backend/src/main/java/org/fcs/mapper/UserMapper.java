@@ -4,7 +4,7 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
-import org.fcs.domain.vo.req.UserPwd;
+import org.fcs.domain.vo.req.UserPwdVo;
 import org.fcs.model.entity.User;
 
 /**
@@ -48,7 +48,7 @@ public interface UserMapper {
      * @param user 用户对象
      * @return User
      */
-    @Update("update user set username=#{username}, nickname=#{nickname}, password=#{password}, email=#{email}, update_time=#{updateTime}, update_by=#{updateBy} where id=#{id}")
+    @Update("update user set username=#{username}, nickname=#{nickname}, email=#{email}, update_time=#{updateTime}, update_by=#{updateBy} where id=#{id}")
     Integer update(User user);
 
     /**
@@ -74,11 +74,11 @@ public interface UserMapper {
     /**
      * 更新用户密码
      *
-     * @param userPwd 用户密码对象
+     * @param userPwdVo 用户密码对象
      * @return Integer
      */
-    @Update("update user set password=#{userPwd.newPwd},update_time=now(),update_by=#{updateBy} where id=#{userPwd.userId}")
-    Integer updatePassword(UserPwd userPwd, String updateBy);
+    @Update("update user set password=#{userPwdVo.newPwd},update_time=now(),update_by=#{updateBy} where id=#{userPwdVo.userId}")
+    Integer updatePassword(UserPwdVo userPwdVo, String updateBy);
 
 
 }

@@ -1,10 +1,11 @@
 package org.fcs.service.impl;
 
+import cn.hutool.core.lang.Assert;
 import cn.hutool.crypto.SecureUtil;
 import cn.hutool.json.JSONObject;
 import jakarta.annotation.Resource;
 import org.fcs.core.utils.ThreadLocalUtil;
-import org.fcs.domain.vo.req.UserPwd;
+import org.fcs.domain.vo.req.UserPwdVo;
 import org.fcs.mapper.UserMapper;
 import org.fcs.model.entity.User;
 import org.fcs.service.UserService;
@@ -90,26 +91,23 @@ public class UserServiceImpl implements UserService {
     /**
      * 更新用户密码
      *
-     * @param userPwd 用户密码
+     * @param userPwdVo 用户密码
      * @return 更新结果
      */
     @Override
-    public Integer updatePassword(UserPwd userPwd) {
+    public Integer updatePassword(UserPwdVo userPwdVo) {
+        System.out.println(userPwdVo);
         // 获取用户名
         String loginUserName = getLoginUserName();
-//        userPwd.setUpdateBy(loginUserName);
-        String oldPassword = SecureUtil.md5(userPwd.getOldPwd());
-        User user = userMapper.findByUserId(userPwd.getUserId());
+        String oldPassword = SecureUtil.md5(userPwdVo.getOldPwd());
+        User user = userMapper.findByUserId(userPwdVo.getUserId());
 //        密码参数校验：新密码不能与旧密码相同，且两次密码输入一致,验证原密码是否正确
-        if (userPwd.getNewPwd().equals(userPwd.getOldPwd())) {
-            return -3;
-        } else if (!userPwd.getNewPwd().equals(userPwd.getRePwd())) {
-            return -2;
-        } else if (!user.getPassword().equals(oldPassword)) {
-            return -1;
-        } else {
-            userPwd.setNewPwd(SecureUtil.md5(userPwd.getNewPwd()));
-            return userMapper.updatePassword(userPwd, loginUserName);
-        }
+        Assert.notEquals(userPwdVo.getNewPwd(), userPwdVo.getOldPwd(), "新密码不能与旧密码相同");
+        Assert.equals(userPwdVo.getNewPwd(), userPwdVo.getRePwd(), "两次密码输入不一致");
+        Assert.equals(user.getPassword(), oldPassword, "原密码不正确");
+        userPwdVo.setNewPwd(SecureUtil.md5(userPwdVo.getNewPwd()));
+        System.out.println(userPwdVo);
+        return userMapper.updatePassword(userPwdVo, loginUserName);
+
     }
 }

@@ -1,6 +1,6 @@
 package org.fcs.service;
 
-import org.fcs.domain.vo.req.UserPwd;
+import org.fcs.domain.vo.req.UserPwdVo;
 import org.fcs.model.entity.User;
 
 /**
@@ -30,5 +30,5 @@ public interface UserService {
 
     Integer updateAvatar(Integer uid, String avatar);
 
-    Integer updatePassword(UserPwd userPwd);
+    Integer updatePassword(UserPwdVo userPwdVo);
 }

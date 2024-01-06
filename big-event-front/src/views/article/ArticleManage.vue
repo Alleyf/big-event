@@ -6,7 +6,7 @@ import article from '@/api/article'
 import {QuillEditor} from '@vueup/vue-quill'
 import '@vueup/vue-quill/dist/vue-quill.snow.prod.css'
 import {useTokenStore} from "@/stores/token.js";
-import {ElMessage} from "element-plus";
+import {ElMessage, ElMessageBox} from "element-plus";
 
 //****************************************//
 const tokenStore = useTokenStore()
@@ -85,10 +85,12 @@ const getCategory = () => {
  * 添加文章相关配置
  */
 //控制抽屉是否显示
+const drawerTitle = ref('添加文章')
 const visibleDrawer = ref(false)
 //添加表单数据模型
 const defaultAvatar = ref("https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png")
 const articleRef = ref()
+const mdRef = ref(null)
 const articleModel = ref({
   title: null,
   categoryId: null,
@@ -110,6 +112,7 @@ const resetAddForm = () => {
 
 const addArticle = () => {
   resetAddForm()
+  console.log(mdRef.value)
   visibleDrawer.value = true
 }
 
@@ -138,19 +141,50 @@ const publishArticle = (state) => {
     articleModel.value.coverImg = defaultAvatar.value
   }
 
-  console.log(articleModel.value)
-
   articleRef.value.validate((valid) => {
     if (valid) {
-      article.articleAdd(articleModel.value, res => {
-        visibleDrawer.value = false
-        resetQueryForm()
-        ElMessage.success('发布成功')
-      }, err => {
-        console.log(err)
-      })
+      if (drawerTitle.value === '添加文章') {
+        article.articleAdd(articleModel.value, res => {
+          visibleDrawer.value = false
+          resetQueryForm()
+          ElMessage.success('发布成功')
+        }, err => {
+          console.log(err)
+        })
+      } else {
+        ElMessage.error('功能尚在研发中~')
+        // article.articleUpdate(articleModel.value, res => {
+        //   visibleDrawer.value = false
+        //   resetQueryForm()
+        //   ElMessage.success('修改成功')
+        // }, err => {
+        //   console.log(err)
+        // })
+      }
     }
     return false
+  })
+}
+
+const editArticle = (paper) => {
+  articleModel.value = paper
+  drawerTitle.value = '编辑文章'
+  visibleDrawer.value = true
+}
+const deleteArticle = (paper) => {
+  ElMessageBox.confirm('确定删除该文章吗', '提示', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning'
+  }).then(() => {
+    ElMessage.error('功能尚在研发中~')
+    // article.articleDelete(paper.id, res => {
+    //   ElMessage.success('删除成功')
+    //   resetQueryForm()
+    // }, err => {
+    //   console.log(err)
+    // })
+  }).catch(() => {
   })
 }
 
@@ -164,14 +198,14 @@ const handleSuccess = (res) => {
 }
 
 onMounted(() => {
-  getAllArticle()
   getCategory()
+  getAllArticle()
 })
 
 
 onUpdated(() => {
-  getAllArticle()
   getCategory()
+  getAllArticle()
 })
 
 </script>
@@ -221,8 +255,8 @@ onUpdated(() => {
             <el-table-column label="操作">
               <template #default="{ row }">
                 <el-row>
-                  <el-button :icon="Edit" circle disabled type="primary" @click="editArticle(row)"/>
-                  <el-button :icon="Delete" circle disabled type="danger" @click="deleteArticle(row)"/>
+                  <el-button :icon="Edit" circle type="primary" @click="editArticle(row)"/>
+                  <el-button :icon="Delete" circle type="danger" @click="deleteArticle(row)"/>
                 </el-row>
               </template>
             </el-table-column>
@@ -241,7 +275,7 @@ onUpdated(() => {
         </div>
 
         <!-- 抽屉 -->
-        <el-drawer v-model="visibleDrawer" direction="rtl" size="50%" title="添加文章">
+        <el-drawer v-model="visibleDrawer" :title="drawerTitle" direction="rtl" size="50%">
           <!-- 添加文章表单 -->
           <el-form ref="articleRef" :model="articleModel" :rules="articleRules" label-width="100px">
             <el-form-item label="文章标题" prop="title">
@@ -270,6 +304,7 @@ onUpdated(() => {
             <el-form-item label="文章内容" prop="content">
               <div class="editor">
                 <quill-editor
+                    ref="mdRef"
                     v-model:content="articleModel.content"
                     contentType="html"
                     theme="snow"

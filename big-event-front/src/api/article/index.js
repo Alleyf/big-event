@@ -35,6 +35,10 @@ const articleAdd = (data, success = null, error = null) => {
     return api.post(`/api/article/add`, null, data, res => success ? success(res) : res, err => error ? error(err) : err);
 }
 
+const articleDelete = (params, success = null, error = null) => {
+    return api.del(`/api/article/delete`, params, res => success ? success(res) : res, err => error ? error(err) : err);
+}
+
 
 export default {
     categoryGetAll,
@@ -44,5 +48,6 @@ export default {
     articleGetAll,
     articleGetByPage,
     articleAdd,
-    articleUpdate
+    articleUpdate,
+    articleDelete
 };

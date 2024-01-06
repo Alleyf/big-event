@@ -27,6 +27,16 @@ function put(url, params = null, data, success = defaultSuccess, error = default
     }).then(res => success(res)).catch(err => error(err));
 }
 
+function patch(url, params = null, data = null, success = defaultSuccess, error = defaultError) {
+    return instance({
+        method: 'patch',
+        url: url,
+        params: params,
+        data: data,
+    }).then(res => success(res)).catch(err => error(err));
+}
+
+
 function del(url, params, success = defaultSuccess, error = defaultError) {
     return instance({
         method: 'delete',
@@ -49,5 +59,6 @@ export default {
     get,
     post,
     put,
+    patch,
     del
 }

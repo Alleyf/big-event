@@ -9,7 +9,7 @@ import jakarta.validation.constraints.Pattern;
 import lombok.extern.slf4j.Slf4j;
 import org.fcs.core.utils.FJwtUtil;
 import org.fcs.core.utils.ThreadLocalUtil;
-import org.fcs.domain.vo.req.UserPwd;
+import org.fcs.domain.vo.req.UserPwdVo;
 import org.fcs.model.entity.User;
 import org.fcs.model.pojo.Result;
 import org.fcs.service.UserService;
@@ -144,26 +144,14 @@ public class UserController {
     /**
      * 更新用户密码
      *
-     * @param userPwd 用户密码
+     * @param userPwdVo 用户密码
      * @return 更新结果
      */
     @PatchMapping("/updatePassword")
-    public Result updatePassword(@RequestBody @Validated UserPwd userPwd,
+    public Result updatePassword(@RequestBody @Validated UserPwdVo userPwdVo,
                                  @RequestHeader("Authorization") String token) {
-        Integer code = userService.updatePassword(userPwd);
-        Result result;
-        switch (code) {
-            case -1 -> result = Result.error("原密码错误");
-            case -2 -> result = Result.error("两次密码输入不一致");
-            case -3 -> result = Result.error("新密码不能与旧密码相同");
-            case 1 -> {
-                redis.opsForValue().getOperations().delete(token);
-                result = Result.success("密码修改成功");
-            }
-            default -> result = Result.error("密码修改失败");
-        }
-        return result;
+        Integer code = userService.updatePassword(userPwdVo);
+        return code > 0 ? Result.success() : Result.error("密码修改失败");
     }
-
 
 }
