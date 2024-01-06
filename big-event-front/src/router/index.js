@@ -12,12 +12,20 @@ const routes = [
         component: () => import("@/views/Layout.vue"),
         children: [
             {
-                path: 'article/category', component: () => import("@/views/article/ArticleCategory.vue"),
-            },
-            {
-                path: 'article/manage',
-                // component: () => import("@/views/article/ArticleManage.vue"),
-                component: () => import("@/views/article/ArticleManage.vue"),
+                path: 'article/',
+                redirect: '/article/category',
+                children: [
+                    {
+                        name: 'articleCategory',
+                        path: 'category',
+                        component: () => import("@/views/article/ArticleCategory.vue"),
+                    },
+                    {
+                        name: 'articleManage',
+                        path: 'manage',
+                        component: () => import("@/views/article/ArticleManage.vue"),
+                    }
+                ]
             },
             {
                 path: 'user/',
@@ -29,10 +37,12 @@ const routes = [
                         component: () => import("@/views/user/UserInfo.vue"),
                     },
                     {
+                        name: 'userAvatar',
                         path: 'avatar',
                         component: () => import("@/views/user/UserAvatar.vue"),
                     },
                     {
+                        name: 'userResetPsd',
                         path: 'resetPsd',
                         component: () => import("@/views/user/UserResetPassword.vue"),
                     }

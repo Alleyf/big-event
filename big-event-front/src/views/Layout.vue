@@ -123,6 +123,12 @@ onMounted(() => {
     <el-container>
       <!-- 头部区域 -->
       <el-header>
+        <el-breadcrumb separator="/">
+          <el-breadcrumb-item v-for="item in router.currentRoute.value.path.split('/')" :key="item"
+                              :to="'/'+item">{{ item }}
+          </el-breadcrumb-item>
+        </el-breadcrumb>
+
         <div>黑白程序员：<strong>{{ userInfoStore.info.nickname }}</strong></div>
         <el-dropdown placement="bottom-end" @command="handleCommand">
                     <span class="el-dropdown__box">
