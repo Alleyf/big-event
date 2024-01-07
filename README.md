@@ -13,7 +13,10 @@
   </a>
 </p>
 
-> A SpringBoot3 + Vue3 project aiming to help initialLearner familiar with SpringBoot and Vue
+
+> \[!TIP]
+>
+> A <kbd>SpringBoot3 + Vue3</kbd> project aiming to help initialLearner familiar with SpringBoot and Vue
 
 ### 🏠 [Homepage](https://github.com/Alleyf/big-event#readme)
 
