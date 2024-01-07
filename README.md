@@ -18,8 +18,6 @@
 >
 > A <kbd>SpringBoot3 + Vue3</kbd> project aiming to help initialLearner familiar with SpringBoot and Vue
 
-### 🏠 [Homepage](https://github.com/Alleyf/big-event#readme)
-
 ## Prerequisites
 
 * node >=16.13.0
@@ -99,3 +97,5 @@ This project is [MIT](https://github.com/Alleyf/big-event/blob/master/LICENSE) l
     <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=Alleyf/big-event&type=Date" />
     <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=Alleyf/big-event&type=Date" />
 </picture>
+
+### 🏠 [Homepage](https://github.com/Alleyf/big-event#readme)

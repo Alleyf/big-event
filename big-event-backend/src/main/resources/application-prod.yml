@@ -61,7 +61,7 @@ files:
 
 # 对象存储配置
 qiniu:
-  accessKey: zlsDfteiKb2EoQCgcdFTRAqDzjhKxvr5L4Qyqig9
-  secretKey: HeDk3u0C-TKdUbZsuQZtNJ2P29C77tJNJSzNXQ9k
-  bucket: abroadmap
-  domain: https://qnpicmap.fcsluck.top/
+  accessKey: xxx
+  secretKey: xxx
+  bucket: xxx
+  domain: xxx
